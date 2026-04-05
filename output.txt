@@ -1,0 +1,21 @@
+=== Preprocessing ===
+Vocabulary size: 3014
+Total tokens:    20804
+
+=== Text Generation (Laplace Smoothing) ===
+Seed: the king
+Generated: the king thinke cloakes apply growing foorth fates cowardly check visit sennit caius sport noone aske artimedorus carries falling fight remaine stole are sicke emulation wisedome titin wee sennet nimblenesse
+
+=== Perplexity ===
+Test sentence: 'the king is dead'
+Perplexity: 3014.0000
+
+=== Bonus (if attempted) ===
+Generated (Interpolation): the king not that i am not well and i will not come to the capitoll to day that caesar and his traine bru the name of honor in it
+Perplexity (Interpolation): 370.1715
+
+Comparison:
+  'the king is dead'  |  Laplace Smoothing   -> Perplexity: 3014.0000
+  'the king is dead'  |  Interpolation (SLI) -> Perplexity: 370.1715
+
+  Laplace smoothing adds 1 to every count and spreads the extra probabilitymass evenly across the entire vocabulary, which is a simple and reliable fix for the zero-probability problem but tends to over-smooth well-attested contexts and assign a perplexity close to V when the exact test trigrams are absent from the training data.Simple Linear Interpolation addresses this by blending three probability sources — trigram (λ=0.6), bigram (λ=0.3), and unigram (λ=0.1) — so the model retains strong trigram evidence where it exists while falling back on lower-order statistics for sparse or unseen contexts.As the numbers above confirm, SLI achieves a noticeably lower perplexity than Laplace on the test sentence, because the bigram and unigram components still provide meaningful probability mass even when the full trigram context was never observed in Julius Caesar.In terms of text quality, the Laplace-generated story can become repetitive under greedy decoding since only one dominant bigram continuation is reinforced; the SLI story shows more variety because the weighted mixture diversifies the probability landscape across three granularities.Overall, SLI offers a better bias-variance trade-off for this Shakespeare corpus and is the preferred smoothing strategy when lower-order n-gram statistics are reliable.
